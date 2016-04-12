@@ -12,6 +12,7 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import co.dito.abako.abako.Activities.Accounts;
+import co.dito.abako.abako.Activities.ActCarteraMenu;
 import co.dito.abako.abako.Entities.EntMenu;
 import co.dito.abako.abako.Entities.MenuInterface;
 import co.dito.abako.abako.R;
@@ -107,7 +108,7 @@ public class AdapterRecyclerMenu extends RecyclerView.Adapter<MenuInterface> {
                         break;
 
                     case "Cartera":
-                        context.startActivity(new Intent(context, Accounts.class));
+                        context.startActivity(new Intent(context, ActCarteraMenu.class));
                         context.finish();
                         break;
 
@@ -119,6 +120,7 @@ public class AdapterRecyclerMenu extends RecyclerView.Adapter<MenuInterface> {
                         Toast.makeText(context, "En construcción", Toast.LENGTH_LONG).show();
                         break;
                 }
+
             }
 
         });
