@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Abako</string>
+    <string name="action_settings">Ingresar Negocio</string>
+    <string name="negocio">Negocio</string>
+    <string name="password">Password</string>
+    <string name="title_activity_act_logon_usuario">Abako</string>
+    <string name="ingresar">Ingresar</string>
+    <string name="nombre_del_modulo">Nombre del modulo</string>
+    <string name="descripci_n_del_modulo">Descripción del modulo</string>
+    <string name="_200_000">$ 200.000</string>
+    <string name="_56">5655</string>
+    <string name="title_activity_act_menu">Menú</string>
+    <string name="usuario">Usuario</string>
+    <string name="install">Install</string>
+    <string name="add_to_wishlist">Add to wishlist</string>
+    <string name="configurar">Configurar</string>
+    <string name="_10">10</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="url_base">http://181.143.94.74/ServicioCODI/ServicioCODI.svc/</string>
+    <string name="title_activity_ddffgv">Ddffgv</string>
+    <string name="agencias">Agencias</string>
+    <string name="negocio_">Negocio</string>
+    <string name="title_activity_act_cartera_menu">Cartera</string>
+    <!-- <string name="url_base">http://172.20.32.75:2080/SCSAPP/Services/Authentication.svc/</string> -->
+
+</resources>

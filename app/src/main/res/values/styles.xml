@@ -1,0 +1,61 @@
+<resources>
+    <!-- Base application theme. -->
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorButtonNormal">@color/colorPrimary</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="CustomTextView" parent="@android:style/TextAppearance.Widget.TextView">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">17sp</item>
+
+    </style>
+
+    <style name="CustomTextViewDescrip" parent="@android:style/TextAppearance.Widget.TextView">
+        <item name="android:textColor">@color/colorNegro</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <!-- No Drawer Header -->
+    <style name="NoHeaderLight" parent="MaterialNavigationDrawerTheme.Light.DarkActionBar12">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorButtonNormal">@color/colorPrimary</item>
+
+    </style>
+
+    <style name="MaterialNavigationDrawerTheme.Light.DarkActionBar12" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="popupTheme">@style/Base.V21.Theme.AppCompat.Light.Dialog</item>
+        <item name="drawerType">@integer/DRAWERTYPE_ACCOUNTS</item>
+        <item name="drawerColor">#ffeeeeee</item>
+        <item name="rippleBackport">false</item>
+        <item name="uniqueToolbarColor">false</item>
+        <item name="singleAccount">false</item>
+        <item name="sectionStyle">@style/MaterialSectionTheme.Light</item>
+        <item name="subheaderStyle">@style/MaterialSubheaderTheme.Light</item>
+        <item name="accountStyle">@style/MaterialAccountTheme</item>
+        <item name="multipaneSupport">false</item>
+        <item name="defaultSectionLoaded">0</item>
+        <item name="learningPattern">true</item>
+        <item name="toolbarElevation">false</item>
+
+    </style>
+
+
+</resources>
