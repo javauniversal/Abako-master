@@ -1,16 +1,21 @@
 package co.dito.abako.abako.Entities;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
-import io.realm.RealmObject;
 
-public class CarteraResponse extends RealmObject {
+public class CarteraResponse {
 
+    @SerializedName("Cartera")
     private List<CarteraSync> cartera;
 
+    @SerializedName("DefaultMasters")
     private CarteraResponseMasters default_masters;
 
+    @SerializedName("MsgId")
     private int msg_id;
 
+    @SerializedName("MsgStr")
     private String msg_str;
 
     public List<CarteraSync> getCartera() {

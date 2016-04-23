@@ -1,9 +1,6 @@
 package co.dito.abako.abako.Entities;
 
-
-import io.realm.RealmObject;
-
-public class DeleteNotificationResponse extends RealmObject {
+public class DeleteNotificationResponse {
 
     private int msg_id;
 

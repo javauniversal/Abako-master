@@ -1,12 +1,13 @@
 package co.dito.abako.abako.Entities;
 
+import com.google.gson.annotations.SerializedName;
 
-import io.realm.RealmObject;
+public class EstadoCartera {
 
-public class EstadoCartera extends RealmObject {
-
+    @SerializedName("Code")
     private int code;
 
+    @SerializedName("Description")
     private String description;
 
     public int getCode() {

@@ -1,29 +1,39 @@
 package co.dito.abako.abako.Entities;
 
+import com.google.gson.annotations.SerializedName;
 
-import io.realm.RealmObject;
+public class ContactoSync {
 
-public class ContactoSync extends RealmObject {
-
+    @SerializedName("IdCnto")
     private int id_cnto;
 
+    @SerializedName("IdEmp")
     private int id_emp;
 
+    @SerializedName("Nmbr")
     private String nmbr;
 
+    @SerializedName("Dir")
     private String dir;
 
+    @SerializedName("IdCdd")
     private int id_cdd;
 
+    @SerializedName("Tel")
     private String tel;
 
+    @SerializedName("mail")
     private String mail;
 
+    @SerializedName("Pdt")
     private int pdt;
 
+    @SerializedName("Tipo")
     private String tipo;
 
+    @SerializedName("Prcs")
     private String prcs;
+
 
     public int getId_cnto() {
         return id_cnto;

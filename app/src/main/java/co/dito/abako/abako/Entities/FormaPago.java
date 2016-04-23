@@ -1,12 +1,13 @@
 package co.dito.abako.abako.Entities;
 
+import com.google.gson.annotations.SerializedName;
 
-import io.realm.RealmObject;
+public class FormaPago {
 
-public class FormaPago extends RealmObject {
-
+    @SerializedName("Code")
     private String code;
 
+    @SerializedName("Description")
     private String description;
 
     public String getCode() {

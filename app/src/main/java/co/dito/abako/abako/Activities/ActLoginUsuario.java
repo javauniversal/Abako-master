@@ -45,6 +45,8 @@ import co.dito.abako.abako.Entities.LoginResponce;
 import co.dito.abako.abako.Entities.ResponseEmpleado;
 import co.dito.abako.abako.R;
 
+import static co.dito.abako.abako.Entities.Empleado.setIp_select;
+
 public class ActLoginUsuario extends AvtivityBase {
 
     @InjectView(R.id.btnIngresar)
@@ -81,7 +83,7 @@ public class ActLoginUsuario extends AvtivityBase {
         mydb = new DBHelper(this);
         ButterKnife.inject(this);
 
-        Empleado empleado = mydb.recuperarInfoEmpleado();
+        final Empleado empleado = mydb.recuperarInfoEmpleado();
 
         if (empleado.getId_empleado() > 0) {
             codeUsu.setText(empleado.getNombre_empleado());
@@ -100,6 +102,8 @@ public class ActLoginUsuario extends AvtivityBase {
                     passUsu.setError("Campo requerido");
                     passUsu.requestFocus();
                 } else {
+
+
                     switch (mydb.selectAgenciasEmp(Integer.parseInt(idAgencia))) {
                         case "1":
                             // Si esta llena la tabla pero no lo encontro.
@@ -107,9 +111,14 @@ public class ActLoginUsuario extends AvtivityBase {
                             break;
                         case "2":
                             // Encontro el registro.
-                            startActivity(new Intent(ActLoginUsuario.this, ActMenu.class));
-                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                            finish();
+                            if (passUsu.getText().toString().equals(empleado.getPassword())){
+                                startActivity(new Intent(ActLoginUsuario.this, ActMenu.class));
+                                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                finish();
+                            } else {
+                                Toast.makeText(ActLoginUsuario.this, "Password incorrecto", Toast.LENGTH_LONG).show();
+                            }
+
                             break;
                         case "3":
                             // No esta llena y no lo encontro.
@@ -208,7 +217,8 @@ public class ActLoginUsuario extends AvtivityBase {
                 break;
             case 1:
                 // 1 - OK
-                if (mydb.insertEmpleado(login) && mydb.insertAgenciaEmple(login.getListAgencias()) && mydb.insertAlmacenEmple(login.getAlmacenesList())
+                if (mydb.insertEmpleado(login, passUsu.getText().toString().trim()) && mydb.insertAgenciaEmple(login.getListAgencias())
+                        && mydb.insertAlmacenEmple(login.getAlmacenesList())
                         && mydb.insertConfiguracionEmple(login.getConfiguracionesList())) {
 
                     startActivity(new Intent(ActLoginUsuario.this, ActMenu.class));
@@ -229,18 +239,14 @@ public class ActLoginUsuario extends AvtivityBase {
         new AsyncTask<String[], Long, Long>() {
             @Override
             protected Long doInBackground(String[]... params) {
-
                 loginRes = mydb.selectNegocios();
-
                 return null;
             }
 
-            protected void onPreExecute() {
-            }
+            protected void onPreExecute() { }
 
             @Override
-            public void onProgressUpdate(Long... value) {
-            }
+            public void onProgressUpdate(Long... value) { }
 
             @Override
             protected void onPostExecute(Long result) {
@@ -252,7 +258,7 @@ public class ActLoginUsuario extends AvtivityBase {
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                         URLNegocio = loginRes.get(position).getListIp().get(0).getValue();
-
+                        setIp_select(URLNegocio);
                         loadeAgencias(position);
                     }
 

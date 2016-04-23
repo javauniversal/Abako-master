@@ -22,7 +22,14 @@
     <string name="title_activity_ddffgv">Ddffgv</string>
     <string name="agencias">Agencias</string>
     <string name="negocio_">Negocio</string>
-    <string name="title_activity_act_cartera_menu">Cartera</string>
+    <string name="title_activity_act_cartera_menu">Modulo Cartera</string>
+    <string name="menu_inicio">Inicio</string>
+    <string name="menu_recibos">Recibos</string>
+    <string name="menu_sincronizar">Sincronizar</string>
+    <string name="menu_informacion">Información</string>
     <!-- <string name="url_base">http://172.20.32.75:2080/SCSAPP/Services/Authentication.svc/</string> -->
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
 </resources>

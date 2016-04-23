@@ -1,12 +1,13 @@
 package co.dito.abako.abako.Entities;
 
+import com.google.gson.annotations.SerializedName;
 
-import io.realm.RealmObject;
+public class ZonaSync {
 
-public class ZonaSync extends RealmObject {
-
+    @SerializedName("IdZona")
     private int id_zona;
 
+    @SerializedName("Descripcion")
     private String descripcion;
 
     public int getId_zona() {

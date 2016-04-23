@@ -13,12 +13,24 @@ import java.util.List;
 
 import co.dito.abako.abako.Entities.Agencia;
 import co.dito.abako.abako.Entities.Almacenes;
+import co.dito.abako.abako.Entities.AtributosEspeciales;
+import co.dito.abako.abako.Entities.AtributosEspecialesSync;
+import co.dito.abako.abako.Entities.CanalSync;
+import co.dito.abako.abako.Entities.CarteraSync;
+import co.dito.abako.abako.Entities.ClienteSync;
 import co.dito.abako.abako.Entities.Configuraciones;
+import co.dito.abako.abako.Entities.ContactoSync;
 import co.dito.abako.abako.Entities.Empleado;
+import co.dito.abako.abako.Entities.EstadoCartera;
+import co.dito.abako.abako.Entities.FormaPago;
+import co.dito.abako.abako.Entities.Frecuencia;
+import co.dito.abako.abako.Entities.Inicia;
 import co.dito.abako.abako.Entities.ListAgencia;
 import co.dito.abako.abako.Entities.ListIp;
 import co.dito.abako.abako.Entities.LoginResponce;
 import co.dito.abako.abako.Entities.ResponseEmpleado;
+import co.dito.abako.abako.Entities.RuteroSync;
+import co.dito.abako.abako.Entities.ZonaSync;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -32,15 +44,52 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         String sqlIntro = "CREATE TABLE intro (id integer primary key AUTOINCREMENT, idintro text )";
+
         String sqlNegocio = "CREATE TABLE negocio (CodigoNegocio text, Negocio text, UrlImg text )";
+
         String sqlAgencias = "CREATE TABLE agencia (key text, value text, idnegocio int)";
+
         String sqlIps = "CREATE TABLE ip (key text, value text, idnegocio int)";
 
-        String sqlAgenciaEmple = "CREATE TABLE agencia_emple (Id text)";
-        String sqlAlmacenEmple = "CREATE TABLE almacen_emple (descripcion text, id int, prd int)";
-        String sqlConfiguracionesEmple = "CREATE TABLE configuracion_emple (valor text, variable text)";
-        String sqlEmpleaso = "CREATE TABLE empleado_negocio (nombre_empleado text, id_empleado int)";
+        String sqlAgenciaEmple = "CREATE TABLE agencia_emple (Id TEXT)";
 
+        String sqlAlmacenEmple = "CREATE TABLE almacen_emple (descripcion TEXT, id int, prd int)";
+
+        String sqlConfiguracionesEmple = "CREATE TABLE configuracion_emple (valor TEXT, variable text)";
+
+        String sqlEmpleaso = "CREATE TABLE empleado_negocio (nombre_empleado TEXT, id_empleado int, password TEXT)";
+
+
+
+
+
+        String sqlClientes = "CREATE TABLE ClienteSync (id integer primary key AUTOINCREMENT, IdEmpresa INT, Razon_Social TEXT, Nombre_Comun TEXT, Identificacion  TEXT, Codigo TEXT, " +
+                             "                          IdCanal INT, IdZona INT, IdLista_Precio INT, Longitud REAL, Latitud REAL, IdFormaPago INT, Cupo INT, Cantidad_Dias REAL, " +
+                             "                          Frecuencia INT, Inicia INT, UltVt TEXT, Prcs TEXT)";
+
+        String sqlCanales = "CREATE TABLE CanalSync (id integer primary key AUTOINCREMENT, IdCanal INT, Descripcion TEXT)";
+
+        String sqlZona = "CREATE TABLE ZonaSync (id integer primary key AUTOINCREMENT, IdZona INT, Descripcion TEXT)";
+
+        String sqlEspecialesSync = "CREATE TABLE AtributosEspecialesSync (id integer primary key AUTOINCREMENT, IdEmp INT, IdTipo INT, Valor TEXT)";
+
+        String sqlFormaPago = "CREATE TABLE FormasPago (id integer primary key AUTOINCREMENT, Code TEXT, Description TEXT)";
+
+        String sqlFrecuencia = "CREATE TABLE Frecuencia (id integer primary key AUTOINCREMENT, Code INT, Description TEXT)";
+
+        String sqlInicia = "CREATE TABLE Inicia (id integer primary key AUTOINCREMENT, Code INT, Description TEXT)";
+
+        String sqlAtributosEspeciales = "CREATE TABLE AtributosEspeciales (id integer primary key AUTOINCREMENT, Code INT, Description TEXT)";
+
+        String sqlCartera = "CREATE TABLE cartera (id integer primary key AUTOINCREMENT, fac INT, venc TEXT, fecha_fac TEXT, dias_ven INT, decimal_p REAL, cuota INT, pgs_abns REAL, " +
+                "           notas REAL, deducc REAL, concep REAL, mora REAL, periodo TEXT, std TEXT, id_emp INT, nota_noApli REAL, sald_fv REAL, prcs TEXT)";
+
+        String sqlEstadoCartera = "CREATE TABLE estado_cartera (id integer primary key AUTOINCREMENT, code INT, description TEXT)";
+
+        String sqlContacto = "CREATE TABLE contacto (id integer primary key AUTOINCREMENT, id_cnto INT, id_emp INT, nmbr TEXT, dir TEXT, id_cdd INT, tel TEXT, mail TEXT, pdt INT, " +
+                "            tipo TEXT, prcs TEXT)";
+
+        String sqlRutero = "CREATE TABLE rutero (id integer primary key AUTOINCREMENT, Id_rutero INT, Proceso TEXT, IdEmpresa INT, Dia INT, Orden REAL)";
 
         db.execSQL(sqlIntro);
         db.execSQL(sqlNegocio);
@@ -50,6 +99,18 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(sqlAlmacenEmple);
         db.execSQL(sqlConfiguracionesEmple);
         db.execSQL(sqlEmpleaso);
+        db.execSQL(sqlClientes);
+        db.execSQL(sqlCanales);
+        db.execSQL(sqlZona);
+        db.execSQL(sqlEspecialesSync);
+        db.execSQL(sqlFormaPago);
+        db.execSQL(sqlFrecuencia);
+        db.execSQL(sqlInicia);
+        db.execSQL(sqlAtributosEspeciales);
+        db.execSQL(sqlCartera);
+        db.execSQL(sqlEstadoCartera);
+        db.execSQL(sqlContacto);
+        db.execSQL(sqlRutero);
 
     }
 
@@ -64,11 +125,263 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS almacen_emple");
         db.execSQL("DROP TABLE IF EXISTS configuracion_emple");
         db.execSQL("DROP TABLE IF EXISTS empleado_negocio");
+        db.execSQL("DROP TABLE IF EXISTS ClienteSync");
+        db.execSQL("DROP TABLE IF EXISTS CanalSync");
+        db.execSQL("DROP TABLE IF EXISTS ZonaSync");
+        db.execSQL("DROP TABLE IF EXISTS AtributosEspecialesSync");
+        db.execSQL("DROP TABLE IF EXISTS FormasPago");
+        db.execSQL("DROP TABLE IF EXISTS Frecuencia");
+        db.execSQL("DROP TABLE IF EXISTS Inicia");
+        db.execSQL("DROP TABLE IF EXISTS AtributosEspeciales");
+        db.execSQL("DROP TABLE IF EXISTS cartera");
+        db.execSQL("DROP TABLE IF EXISTS estado_cartera");
+        db.execSQL("DROP TABLE IF EXISTS contacto");
+        db.execSQL("DROP TABLE IF EXISTS rutero");
+
         this.onCreate(db);
     }
 
+    public List<ClienteSync> selectClientesSyncs(){
+
+        List<ClienteSync> clienteSyncList = new ArrayList<>();
+
+        String sql_validate = "SELECT id, IdEmpresa, Razon_Social, Nombre_Comun, Identificacion, Codigo, IdCanal, IdZona, IdLista_Precio, Longitud, Latitud, IdFormaPago, " +
+                                    " Cupo, Cantidad_Dias, Frecuencia, Inicia, UltVt, Prcs FROM ClienteSync";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(sql_validate, null);
+
+        ClienteSync clienteSync;
+
+        if (cursor.moveToFirst()) {
+            do {
+                clienteSync = new ClienteSync();
+                clienteSync.setId_empresa(cursor.getInt(1));
+                clienteSync.setNombre_comun(cursor.getString(3));
+                clienteSyncList.add(clienteSync);
+            } while(cursor.moveToNext());
+        }
+
+        return clienteSyncList;
+    }
+
+    public boolean insertClienteSync(List<ClienteSync> clienteSyncs){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        try {
+            for (int i = 0; i < clienteSyncs.size(); i++){
+                values.put("IdEmpresa", clienteSyncs.get(i).getId_empresa());
+                values.put("Razon_Social", clienteSyncs.get(i).getRazon_social());
+                values.put("Nombre_Comun", clienteSyncs.get(i).getNombre_comun());
+                values.put("Identificacion", clienteSyncs.get(i).getIdentificacion());
+                values.put("Codigo", clienteSyncs.get(i).getCodigo());
+                values.put("IdCanal", clienteSyncs.get(i).getId_canal());
+                values.put("IdZona", clienteSyncs.get(i).getId_zona());
+                values.put("IdLista_Precio", clienteSyncs.get(i).getId_lista_precio());
+                values.put("Longitud", clienteSyncs.get(i).getLongitud());
+                values.put("Latitud", clienteSyncs.get(i).getLatitud());
+                values.put("IdFormaPago", clienteSyncs.get(i).getId_forma_pago());
+                values.put("Cupo", clienteSyncs.get(i).getCupo());
+                values.put("Cantidad_Dias", clienteSyncs.get(i).getCantidad_dias());
+                values.put("Frecuencia", clienteSyncs.get(i).getFrecuencia());
+                values.put("Inicia", clienteSyncs.get(i).getInicia());
+                values.put("UltVt", clienteSyncs.get(i).getUlt_vt());
+                values.put("Prcs", clienteSyncs.get(i).getPrcs());
+
+                db.insert("ClienteSync", null, values);
+            }
+        }catch (SQLiteConstraintException e){
+            db.close();
+            return false;
+        }
+        db.close();
+        return true;
+    }
+
+    public boolean validaDataTable(String table){
+        Cursor cursor;
+        boolean indicador = false;
+        String sql = "SELECT * FROM "+table+" LIMIT 1";
+        SQLiteDatabase db = this.getWritableDatabase();
+        cursor = db.rawQuery(sql, null);
+        if (cursor.moveToFirst()) {
+            indicador = true;
+        }
+        return indicador;
+    }
+
+    public boolean insertCanalSync (List<CanalSync> canalSyncs){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        try {
+            for (int i = 0; i < canalSyncs.size(); i++){
+                values.put("IdCanal", canalSyncs.get(i).getId_canal());
+                values.put("Descripcion", canalSyncs.get(i).getDescripcion());
+
+                db.insert("CanalSync", null, values);
+            }
+
+        }catch (SQLiteConstraintException e){
+            db.close();
+            return false;
+        }
+
+        db.close();
+        return true;
+    }
+
+    public boolean inserTRutero (List<RuteroSync> Rutero){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        try {
+            for (int i = 0; i < Rutero.size(); i++){
+                values.put("Id_rutero", Rutero.get(i).getId());
+                values.put("Proceso", Rutero.get(i).getProceso());
+                values.put("IdEmpresa", Rutero.get(i).getIdEmpresa());
+                values.put("Dia", Rutero.get(i).getDia());
+                values.put("Orden", Rutero.get(i).getOrden());
+
+                db.insert("rutero", null, values);
+
+            }
+
+        }catch (SQLiteConstraintException e){
+            db.close();
+            return false;
+        }
+
+        db.close();
+        return true;
+    }
+
+    public boolean insertZonaSync (List<ZonaSync> zonaSyncs){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        try {
+            for (int i = 0; i < zonaSyncs.size(); i++){
+                values.put("IdZona", zonaSyncs.get(i).getId_zona());
+                values.put("Descripcion", zonaSyncs.get(i).getDescripcion());
+
+                db.insert("ZonaSync", null, values);
+            }
+
+        }catch (SQLiteConstraintException e){
+            db.close();
+            return false;
+        }
+
+        db.close();
+        return true;
+    }
+
+    public boolean insertAtributosEspecialesSync (List<AtributosEspecialesSync> atributosEspecialesSyncs){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        try {
+            for (int i = 0; i < atributosEspecialesSyncs.size(); i++){
+                values.put("IdEmp", atributosEspecialesSyncs.get(i).getId_emp());
+                values.put("IdTipo", atributosEspecialesSyncs.get(i).getId_tipo());
+                values.put("Valor", atributosEspecialesSyncs.get(i).getValor());
+
+                db.insert("AtributosEspecialesSync", null, values);
+            }
+
+        }catch (SQLiteConstraintException e){
+            db.close();
+            return false;
+        }
+
+        db.close();
+        return true;
+    }
+
+    public boolean insertFormasPago (List<FormaPago> formaPagos){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        try {
+            for (int i = 0; i < formaPagos.size(); i++){
+                values.put("Code", formaPagos.get(i).getCode());
+                values.put("Descripcion", formaPagos.get(i).getDescription());
+
+                db.insert("FormasPago", null, values);
+            }
+        }catch (SQLiteConstraintException e){
+            db.close();
+            return false;
+        }
+
+        db.close();
+        return true;
+    }
+
+    public boolean insertFrecuencia (List<Frecuencia> frecuencias){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        try {
+            for (int i = 0; i < frecuencias.size(); i++){
+                values.put("Code", frecuencias.get(i).getCode());
+                values.put("Descripcion", frecuencias.get(i).getDescription());
+
+                db.insert("Frecuencia", null, values);
+            }
+        }catch (SQLiteConstraintException e){
+            db.close();
+            return false;
+        }
+
+        db.close();
+        return true;
+    }
+
+    public boolean insertInicia (List<Inicia> inicias){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        try {
+            for (int i = 0; i < inicias.size(); i++){
+                values.put("Code", inicias.get(i).getCode());
+                values.put("Descripcion", inicias.get(i).getDescription());
+
+                db.insert("Inicia", null, values);
+            }
+        }catch (SQLiteConstraintException e){
+            db.close();
+            return false;
+        }
+
+        db.close();
+        return true;
+    }
+
+    public boolean insertAtributosEspeciales (List<AtributosEspeciales> atributosEspeciales){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        try {
+            for (int i = 0; i < atributosEspeciales.size(); i++){
+                values.put("Code", atributosEspeciales.get(i).getCode());
+                values.put("Descripcion", atributosEspeciales.get(i).getDescription());
+
+                db.insert("AtributosEspeciales", null, values);
+            }
+        }catch (SQLiteConstraintException e){
+            db.close();
+            return false;
+        }
+
+        db.close();
+        return true;
+
+    }
+
     //region Insertar empleado.
-    public boolean insertEmpleado(ResponseEmpleado data){
+    public boolean insertEmpleado(ResponseEmpleado data, String password){
 
         DeleteEmpleado();
 
@@ -78,6 +391,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             values.put("nombre_empleado", data.getNombre());
             values.put("id_empleado", data.getIdPersona());
+            values.put("password", password);
 
             db.insert("empleado_negocio", null, values);
 
@@ -91,10 +405,116 @@ public class DBHelper extends SQLiteOpenHelper {
     }
     //endregion
 
+    public List<CarteraSync> selectCarteraIdEmpresa(int id_empresa){
+        List<CarteraSync> carteraSyncList = new ArrayList<>();
+
+        String sql = "SELECT id, fac, venc, fecha_fac, dias_ven, decimal_p, cuota, pgs_abns, notas, deducc, concep, mora, periodo, " +
+                           " std, id_emp, nota_noApli, sald_fv, prcs FROM cartera WHERE id_emp ="+id_empresa;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        CarteraSync carteraSync;
+        if (cursor.moveToFirst()) {
+            do {
+                carteraSync =  new CarteraSync();
+                carteraSync.setFac(cursor.getInt(1));
+                carteraSync.setFecha_fac(cursor.getString(3));
+
+                carteraSyncList.add(carteraSync);
+            } while(cursor.moveToNext());
+        }
+        return carteraSyncList;
+    }
+
+    public boolean insertCartera(List<CarteraSync> cartera) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        try {
+            for (int i = 0; i < cartera.size(); i++){
+                values.put("fac", cartera.get(i).getFac());
+                values.put("venc", cartera.get(i).getVenc());
+                values.put("fecha_fac", cartera.get(i).getFecha_fac());
+                values.put("dias_ven", cartera.get(i).getDias_ven());
+                values.put("decimal_p", cartera.get(i).getDecimal_p());
+                values.put("cuota", cartera.get(i).getCuota());
+                values.put("pgs_abns", cartera.get(i).getPgs_abns());
+                values.put("notas", cartera.get(i).getNotas());
+                values.put("deducc", cartera.get(i).getDeducc());
+                values.put("concep", cartera.get(i).getConcep());
+                values.put("mora", cartera.get(i).getMora());
+                values.put("periodo", cartera.get(i).getPeriodo());
+                values.put("std", cartera.get(i).getStd());
+                values.put("id_emp", cartera.get(i).getId_emp());
+                values.put("nota_noApli", cartera.get(i).getNota_noApli());
+                values.put("sald_fv", cartera.get(i).getSald_fv());
+                values.put("prcs", cartera.get(i).getPrcs());
+
+                db.insert("cartera", null, values);
+            }
+        }catch (SQLiteConstraintException e){
+            db.close();
+            return false;
+        }
+
+        db.close();
+        return true;
+    }
+
+    public boolean insertContacto(List<ContactoSync> contacto) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        try {
+            for (int i = 0; i < contacto.size(); i++){
+                values.put("id_cnto", contacto.get(i).getId_cnto());
+                values.put("id_emp", contacto.get(i).getId_emp());
+                values.put("nmbr", contacto.get(i).getNmbr());
+                values.put("dir", contacto.get(i).getDir());
+                values.put("id_cdd", contacto.get(i).getId_cdd());
+                values.put("tel", contacto.get(i).getTel());
+                values.put("mail", contacto.get(i).getMail());
+                values.put("pdt", contacto.get(i).getPdt());
+                values.put("tipo", contacto.get(i).getTipo());
+                values.put("prcs", contacto.get(i).getPrcs());
+
+                db.insert("contacto", null, values);
+            }
+        }catch (SQLiteConstraintException e){
+            db.close();
+            return false;
+        }
+
+        db.close();
+        return true;
+    }
+
+    public boolean insertEstadoCartera (List<EstadoCartera> estadoCarteras){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        try {
+            for (int i = 0; i < estadoCarteras.size(); i++){
+                values.put("code", estadoCarteras.get(i).getCode());
+                values.put("description", estadoCarteras.get(i).getDescription());
+
+                db.insert("estado_cartera", null, values);
+            }
+        }catch (SQLiteConstraintException e){
+            db.close();
+            return false;
+        }
+
+        db.close();
+        return true;
+    }
+
     //region Validar si el empleado existe.
-    public boolean validateEmpleado(int data){
+    public boolean validateEmpleado(int data, String passwprd){
         boolean _validate = false;
-        String sql_validate = "SELECT * FROM empleado_negocio WHERE id_empleado = "+data;
+        String sql_validate = "SELECT * FROM empleado_negocio WHERE id_empleado = "+data+" password="+passwprd;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(sql_validate, null);
@@ -118,6 +538,7 @@ public class DBHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             empleado.setNombre_empleado(cursor.getString(0));
             empleado.setId_empleado(Integer.parseInt(cursor.getString(1)));
+            empleado.setPassword(cursor.getString(2));
         }
 
         return empleado;
@@ -130,7 +551,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
         return p > 0;
     }
-
 
     //region Insertar La configuracion del empleado.
     public boolean insertConfiguracionEmple(List<Configuraciones> data){
@@ -209,8 +629,8 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(sql, null);
 
-        if(cursor.getCount() > 0){
-                // Se que encontro datos
+        if(cursor.getCount() > 0) {
+            // Se que encontro datos
             _validate = true;
 
             String sql_validate = "SELECT * FROM agencia_emple WHERE Id = "+data;
@@ -236,19 +656,17 @@ public class DBHelper extends SQLiteOpenHelper {
     //endregion
 
     //region Insertar parametro al inicio de la aplicacion
-    public boolean insertIntro(String data){
+    public boolean insertIP(String data){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         try {
-            values.put("idintro",data);
-            db.insert("intro", null, values);
+            values.put("ip", data);
+            db.insert("ipselect", null, values);
         }catch (SQLiteConstraintException e){
-            Log.d("data", "failure to insert word,", e);
+            Log.d("ipselect", "failure to insert word,", e);
             return false;
         }
-
         return true;
-
     }
     //endregion
 

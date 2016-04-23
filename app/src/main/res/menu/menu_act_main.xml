@@ -1,10 +1,24 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="co.dito.abako.abako.ActMain">
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_inicio"
+            android:icon="@drawable/ic_home_black_36dp"
+            android:title="@string/menu_inicio" />
+        <item
+            android:id="@+id/nav_recibos"
+            android:icon="@drawable/ic_border_color_black_36dp"
+            android:title="@string/menu_recibos" />
+        <item
+            android:id="@+id/nav_sincronizar"
+            android:icon="@drawable/ic_swap_vertical_circle_black_36dp"
+            android:title="@string/menu_sincronizar" />
+        <item
+            android:id="@+id/nav_informacion"
+            android:icon="@drawable/ic_record_voice_over_black_36dp"
+            android:title="@string/menu_informacion" />
+    </group>
+
 </menu>
+

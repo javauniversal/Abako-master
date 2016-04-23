@@ -1,23 +1,30 @@
 package co.dito.abako.abako.Entities;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
-import io.realm.RealmObject;
+public class ClientResponse {
 
-public class ClientResponse extends RealmObject {
-
+    @SerializedName("Clientes")
     private List<ClienteSync> clientes;
 
+    @SerializedName("Canales")
     private List<CanalSync> canales;
 
+    @SerializedName("Zonas")
     private List<ZonaSync> zonas;
 
+    @SerializedName("AtributosEspeciales")
     private List<AtributosEspecialesSync> atributos_especiales;
 
+    @SerializedName("DefaultMasters")
     private ClientResponseMasters defaultMasters;
 
+    @SerializedName("MsgId")
     private int msgiId;
 
+    @SerializedName("MsgStr")
     private String msg_str;
 
     public List<ClienteSync> getClientes() {

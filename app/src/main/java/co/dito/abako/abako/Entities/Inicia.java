@@ -1,12 +1,14 @@
 package co.dito.abako.abako.Entities;
 
 
-import io.realm.RealmObject;
+import com.google.gson.annotations.SerializedName;
 
-public class Inicia extends RealmObject {
+public class Inicia {
 
+    @SerializedName("Code")
     public int code;
 
+    @SerializedName("Description")
     public String description;
 
     public int getCode() {

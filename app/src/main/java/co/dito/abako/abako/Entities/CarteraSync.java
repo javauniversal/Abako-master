@@ -1,42 +1,60 @@
 package co.dito.abako.abako.Entities;
 
-import io.realm.RealmObject;
+import com.google.gson.annotations.SerializedName;
 
-public class CarteraSync extends RealmObject {
+public class CarteraSync  {
 
+    @SerializedName("Fac")
     private int fac;
 
+    @SerializedName("Venc")
     private String venc;
 
+    @SerializedName("FechaFac")
     private String fecha_fac;
 
+    @SerializedName("DiasVen")
     private int dias_ven;
 
+    @SerializedName("Sld")
     private double decimal_p;
 
+    @SerializedName("Cuota")
     private int cuota;
 
+    @SerializedName("PgsAbns ")
     private double pgs_abns;
 
+    @SerializedName("Notas")
     private double notas;
 
+    @SerializedName("Deducc")
     private double deducc;
 
+    @SerializedName("Concep")
     private double concep;
 
+    @SerializedName("Mora")
     private double mora;
 
+    @SerializedName("Periodo")
     private String periodo;
 
+    @SerializedName("Std")
     private String std;
 
+    @SerializedName("IdEmp")
     private int id_emp;
 
+    @SerializedName("NotaNoApli")
     private double nota_noApli;
 
+    @SerializedName("SaldFv")
     private double sald_fv;
 
+    @SerializedName("Prcs")
     private String prcs;
+
 
     public int getFac() {
         return fac;

@@ -1,14 +1,16 @@
 package co.dito.abako.abako.Entities;
 
+import com.google.gson.annotations.SerializedName;
 
-import io.realm.RealmObject;
+public class AtributosEspecialesSync {
 
-public class AtributosEspecialesSync extends RealmObject {
-
+    @SerializedName("IdEmp")
     private int id_emp;
 
+    @SerializedName("IdTipo")
     private int id_tipo;
 
+    @SerializedName("Valor")
     private String valor;
 
     public int getId_emp() {
