@@ -2,6 +2,8 @@ package co.dito.abako.abako.Entities;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 public class ClienteSync {
 
     @SerializedName("IdEmpresa")
@@ -52,8 +54,34 @@ public class ClienteSync {
     @SerializedName("UltVt")
     private String ult_vt;
 
+    @SerializedName("ultmpg")
+    private double ultmpg;
+
+    @SerializedName("Fchltmpg")
+    private String Fchltmpg;
+
     @SerializedName("Prcs")
     private String prcs;
+
+    private double suma_factura;
+
+    private String direccion;
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public double getSuma_factura() {
+        return suma_factura;
+    }
+
+    public void setSuma_factura(double suma_factura) {
+        this.suma_factura = suma_factura;
+    }
 
     public int getId_empresa() {
         return id_empresa;
@@ -189,5 +217,21 @@ public class ClienteSync {
 
     public void setPrcs(String prcs) {
         this.prcs = prcs;
+    }
+
+    public double getUltmpg() {
+        return ultmpg;
+    }
+
+    public void setUltmpg(double ultmpg) {
+        this.ultmpg = ultmpg;
+    }
+
+    public String getFchltmpg() {
+        return Fchltmpg;
+    }
+
+    public void setFchltmpg(String fchltmpg) {
+        Fchltmpg = fchltmpg;
     }
 }

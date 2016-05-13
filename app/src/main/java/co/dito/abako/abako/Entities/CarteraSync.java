@@ -17,7 +17,7 @@ public class CarteraSync  {
     private int dias_ven;
 
     @SerializedName("Sld")
-    private double decimal_p;
+    private double sld;
 
     @SerializedName("Cuota")
     private int cuota;
@@ -86,14 +86,6 @@ public class CarteraSync  {
 
     public void setDias_ven(int dias_ven) {
         this.dias_ven = dias_ven;
-    }
-
-    public double getDecimal_p() {
-        return decimal_p;
-    }
-
-    public void setDecimal_p(double decimal_p) {
-        this.decimal_p = decimal_p;
     }
 
     public int getCuota() {
@@ -190,6 +182,14 @@ public class CarteraSync  {
 
     public void setPrcs(String prcs) {
         this.prcs = prcs;
+    }
+
+    public double getSld() {
+        return sld;
+    }
+
+    public void setSld(double sld) {
+        this.sld = sld;
     }
 
 }

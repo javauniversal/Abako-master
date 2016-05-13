@@ -65,7 +65,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String sqlClientes = "CREATE TABLE ClienteSync (id integer primary key AUTOINCREMENT, IdEmpresa INT, Razon_Social TEXT, Nombre_Comun TEXT, Identificacion  TEXT, Codigo TEXT, " +
                              "                          IdCanal INT, IdZona INT, IdLista_Precio INT, Longitud REAL, Latitud REAL, IdFormaPago INT, Cupo INT, Cantidad_Dias REAL, " +
-                             "                          Frecuencia INT, Inicia INT, UltVt TEXT, Prcs TEXT)";
+                             "                          Frecuencia INT, Inicia INT, UltVt TEXT, Prcs TEXT, ultmpg Real, Fchltmpg TEXT)";
 
         String sqlCanales = "CREATE TABLE CanalSync (id integer primary key AUTOINCREMENT, IdCanal INT, Descripcion TEXT)";
 
@@ -75,7 +75,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String sqlFormaPago = "CREATE TABLE FormasPago (id integer primary key AUTOINCREMENT, Code TEXT, Description TEXT)";
 
-        String sqlFrecuencia = "CREATE TABLE Frecuencia (id integer primary key AUTOINCREMENT, Code INT, Description TEXT)";
+        String sqlFrecuencia = "CREATE TABLE Frecuenciatb (id integer primary key AUTOINCREMENT, Code TEXT, Description TEXT)";
 
         String sqlInicia = "CREATE TABLE Inicia (id integer primary key AUTOINCREMENT, Code INT, Description TEXT)";
 
@@ -130,7 +130,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS ZonaSync");
         db.execSQL("DROP TABLE IF EXISTS AtributosEspecialesSync");
         db.execSQL("DROP TABLE IF EXISTS FormasPago");
-        db.execSQL("DROP TABLE IF EXISTS Frecuencia");
+        db.execSQL("DROP TABLE IF EXISTS Frecuenciatb");
         db.execSQL("DROP TABLE IF EXISTS Inicia");
         db.execSQL("DROP TABLE IF EXISTS AtributosEspeciales");
         db.execSQL("DROP TABLE IF EXISTS cartera");
@@ -145,8 +145,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
         List<ClienteSync> clienteSyncList = new ArrayList<>();
 
-        String sql_validate = "SELECT id, IdEmpresa, Razon_Social, Nombre_Comun, Identificacion, Codigo, IdCanal, IdZona, IdLista_Precio, Longitud, Latitud, IdFormaPago, " +
-                                    " Cupo, Cantidad_Dias, Frecuencia, Inicia, UltVt, Prcs FROM ClienteSync";
+        String sql_validate = "SELECT cli.id, cli.IdEmpresa, cli.Razon_Social, cli.Nombre_Comun, cli.Identificacion, cli.Codigo, cli.IdCanal, cli.IdZona, cli.IdLista_Precio, cli.Longitud, cli.Latitud, cli.IdFormaPago, " +
+                " cli.Cupo, cli.Cantidad_Dias, cli.Frecuencia, cli.Inicia, cli.UltVt, cli.Prcs, cli.ultmpg, cli.Fchltmpg, con.dir, SUM(car.decimal_p) totalCsaartera " +
+                " FROM ClienteSync AS cli , cartera AS car, contacto AS con WHERE cli.IdEmpresa = car.id_emp AND cli.IdEmpresa = con.id_emp GROUP BY cli.id ";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(sql_validate, null);
@@ -157,7 +158,20 @@ public class DBHelper extends SQLiteOpenHelper {
             do {
                 clienteSync = new ClienteSync();
                 clienteSync.setId_empresa(cursor.getInt(1));
+                clienteSync.setRazon_social(cursor.getString(2));
                 clienteSync.setNombre_comun(cursor.getString(3));
+                clienteSync.setIdentificacion(cursor.getString(4));
+                clienteSync.setCodigo(cursor.getString(5));
+
+                clienteSync.setUltmpg(cursor.getDouble(18));
+                clienteSync.setFchltmpg(cursor.getString(19));
+
+                clienteSync.setDireccion(cursor.getString(20));
+
+                clienteSync.setSuma_factura(cursor.getDouble(21));
+
+
+
                 clienteSyncList.add(clienteSync);
             } while(cursor.moveToNext());
         }
@@ -187,6 +201,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put("Inicia", clienteSyncs.get(i).getInicia());
                 values.put("UltVt", clienteSyncs.get(i).getUlt_vt());
                 values.put("Prcs", clienteSyncs.get(i).getPrcs());
+                values.put("ultmpg", clienteSyncs.get(i).getUltmpg());
+                values.put("Fchltmpg", clienteSyncs.get(i).getFchltmpg());
 
                 db.insert("ClienteSync", null, values);
             }
@@ -322,13 +338,13 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean insertFrecuencia (List<Frecuencia> frecuencias){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-
         try {
             for (int i = 0; i < frecuencias.size(); i++){
-                values.put("Code", frecuencias.get(i).getCode());
-                values.put("Descripcion", frecuencias.get(i).getDescription());
 
-                db.insert("Frecuencia", null, values);
+                values.put("Code", frecuencias.get(i).getCode());
+                values.put("Description", frecuencias.get(i).getDescription());
+
+                db.insert("Frecuenciatb", null, values);
             }
         }catch (SQLiteConstraintException e){
             db.close();
@@ -408,8 +424,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public List<CarteraSync> selectCarteraIdEmpresa(int id_empresa){
         List<CarteraSync> carteraSyncList = new ArrayList<>();
 
-        String sql = "SELECT id, fac, venc, fecha_fac, dias_ven, decimal_p, cuota, pgs_abns, notas, deducc, concep, mora, periodo, " +
-                           " std, id_emp, nota_noApli, sald_fv, prcs FROM cartera WHERE id_emp ="+id_empresa;
+        String sql = "SELECT id, fac, venc, fecha_fac, dias_ven, SUM(decimal_p), cuota, pgs_abns, notas, deducc, concep, mora, periodo, " +
+                           " std, id_emp, nota_noApli, sald_fv, prcs FROM cartera WHERE id_emp ="+id_empresa+ " GROUP BY id";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(sql, null);
@@ -418,12 +434,32 @@ public class DBHelper extends SQLiteOpenHelper {
             do {
                 carteraSync =  new CarteraSync();
                 carteraSync.setFac(cursor.getInt(1));
+                carteraSync.setVenc(cursor.getString(2));
                 carteraSync.setFecha_fac(cursor.getString(3));
+
+                carteraSync.setSld(cursor.getDouble(5));
 
                 carteraSyncList.add(carteraSync);
             } while(cursor.moveToNext());
         }
         return carteraSyncList;
+    }
+
+    public double selectCarteraIdEmpresaSum(int id_empresa){
+
+        double sumaTotal = 0.0;
+
+        String sql = "SELECT SUM(decimal_p) AS suma FROM cartera WHERE id_emp = "+id_empresa + " GROUP BY id";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToFirst()) {
+            do {
+                sumaTotal = cursor.getDouble(0);
+            } while(cursor.moveToNext());
+        }
+
+        return sumaTotal;
     }
 
     public boolean insertCartera(List<CarteraSync> cartera) {
@@ -437,7 +473,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put("venc", cartera.get(i).getVenc());
                 values.put("fecha_fac", cartera.get(i).getFecha_fac());
                 values.put("dias_ven", cartera.get(i).getDias_ven());
-                values.put("decimal_p", cartera.get(i).getDecimal_p());
+                values.put("decimal_p", cartera.get(i).getSld());
                 values.put("cuota", cartera.get(i).getCuota());
                 values.put("pgs_abns", cartera.get(i).getPgs_abns());
                 values.put("notas", cartera.get(i).getNotas());
@@ -821,6 +857,27 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
+    public List<Frecuencia> selectFrecuencia() {
+
+        ArrayList<Frecuencia> frecuenciaArrayList = new ArrayList<>();
+
+        String sql = "SELECT * FROM Frecuenciatb ORDER BY Description ASC";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToFirst()) {
+            Frecuencia frecuencia;
+            do {
+                frecuencia = new Frecuencia();
+                frecuencia.setCode(cursor.getInt(1));
+                frecuencia.setDescription(cursor.getString(2));
+
+                frecuenciaArrayList.add(frecuencia);
+            } while(cursor.moveToNext());
+        }
+
+        return frecuenciaArrayList;
+    }
+
     public List<ListIp> listIps(String idNegocio){
         ArrayList<ListIp> listIps = new ArrayList<>();
         String sql = "SELECT key, value FROM ip WHERE idnegocio = "+idNegocio+" ";
@@ -858,6 +915,48 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return listAgencias;
+    }
+
+    public List<ZonaSync> selectZona() {
+
+        ArrayList<ZonaSync> zonaSyncArrayList = new ArrayList<>();
+
+        String sql = "SELECT * FROM ZonaSync ORDER BY Descripcion ASC";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToFirst()) {
+            ZonaSync zonaSync;
+            do {
+                zonaSync = new ZonaSync();
+                zonaSync.setId_zona(cursor.getInt(1));
+                zonaSync.setDescripcion(cursor.getString(2));
+
+                zonaSyncArrayList.add(zonaSync);
+            } while(cursor.moveToNext());
+        }
+
+        return zonaSyncArrayList;
+    }
+
+    public List<CanalSync> selectCanal() {
+
+        ArrayList<CanalSync> canalSyncArrayList = new ArrayList<>();
+
+        String sql = "SELECT * FROM CanalSync ORDER BY Descripcion ASC";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToFirst()) {
+            CanalSync canalSync;
+            do {
+                canalSync = new CanalSync();
+                canalSync.setId_canal(cursor.getInt(1));
+                canalSync.setDescripcion(cursor.getString(2));
+
+                canalSyncArrayList.add(canalSync);
+            } while(cursor.moveToNext());
+        }
+
+        return canalSyncArrayList;
     }
 
 }

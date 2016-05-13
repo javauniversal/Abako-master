@@ -11,8 +11,9 @@ import co.dito.abako.abako.R;
 
 public class ClienteInterface extends RecyclerView.ViewHolder{
 
-    public TextView nombre_cliente;
-    public TextView numero_recibo;
+    public TextView nombre_comu;
+    public TextView razon_social;
+    public TextView identificacion;
     public TextView direccion;
     public TextView total_cartera;
     public TextView ultimo_pago;
@@ -23,8 +24,9 @@ public class ClienteInterface extends RecyclerView.ViewHolder{
     public ClienteInterface(View itemView, Context context) {
         super(itemView);
 
-        this.nombre_cliente = (TextView) itemView.findViewById(R.id.nombre_cliente);
-        //this.numero_recibo = (TextView) itemView.findViewById(R.id.numero_recibo);
+        this.nombre_comu = (TextView) itemView.findViewById(R.id.nombre_comu);
+        this.razon_social = (TextView) itemView.findViewById(R.id.razon_social);
+        this.identificacion = (TextView) itemView.findViewById(R.id.identificacion);
         this.direccion = (TextView) itemView.findViewById(R.id.direccion);
         this.total_cartera = (TextView) itemView.findViewById(R.id.total_cartera);
         this.ultimo_pago = (TextView) itemView.findViewById(R.id.ultimo_pago);

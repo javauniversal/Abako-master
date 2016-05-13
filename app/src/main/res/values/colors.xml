@@ -7,4 +7,6 @@
     <color name="colorNegro">#000000</color>
     <color name="colorFondo">#E6E6E6</color>
     <color name="colorlinea">#e6e6e6</color>
+    <color name="actionBarColorText">#ffffff</color>
+    <color name="color_gris">#E6E6E6</color>
 </resources>

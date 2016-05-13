@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -29,11 +30,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -165,7 +168,7 @@ public class ActCarteraMenu extends AppCompatActivity implements NavigationView.
 
     private void parceJsonCliente(JSONObject response) {
         try {
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().setDateFormat(DateFormat.FULL, DateFormat.FULL).create();
             JsonCompress fromJson = gson.fromJson(String.valueOf(response), JsonCompress.class);
             String json_final = zipUtils.decompress(fromJson.getContent());
 
@@ -250,7 +253,7 @@ public class ActCarteraMenu extends AppCompatActivity implements NavigationView.
             JsonCompress fromJson = gson.fromJson(String.valueOf(response), JsonCompress.class);
             String json_final = zipUtils.decompress(fromJson.getContent());
 
-            CarteraResponse carteraResponse = gson.fromJson(json_final, CarteraResponse.class);
+             CarteraResponse carteraResponse = gson.fromJson(json_final, CarteraResponse.class);
 
             if (carteraResponse.getMsg_id() != -1){
                 if (mydb.insertCartera(carteraResponse.getCartera()) && mydb.insertEstadoCartera(carteraResponse.getDefault_masters().getEstadoCarteras())) {
